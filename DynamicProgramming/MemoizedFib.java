@@ -8,9 +8,12 @@ public class MemoizedFib {
 		System.out.println(fib.getFib(num));
 	}
 
-	private Map<Integer, Integer> memo = new HashMap<>();
-
 	private int getFib(int num) {
+		Map<Integer, Integer> memo = new HashMap<>();
+		return getMemoizedFib(num, memo);
+	}
+
+	private int getMemoizedFib(int num, Map<Integer, Integer> memo) {
 		if (num <=0) {
 			return -1;
 		}
@@ -20,7 +23,7 @@ public class MemoizedFib {
 		if (memo.containsKey(num)) {
 			return memo.get(num);
 		}
-		memo.put(num, getFib(num-2) + getFib(num-1));
+		memo.put(num, getMemoizedFib(num-2, memo) + getMemoizedFib(num-1, memo));
 		return memo.get(num);
 	}
 }

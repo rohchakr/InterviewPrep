@@ -13,9 +13,12 @@ public class MemoizedGridTraveller {
 		System.out.println(t.travel(Integer.parseInt(args[0]), Integer.parseInt(args[1])));
 	}
 
-	private Map<String, Integer> memo = new HashMap<>();
-
 	private int travel(int m, int n) {
+		Map<String, Integer> memo = new HashMap<>();
+		return memoizedTravel(m, n, memo);
+	}
+
+	private int memoizedTravel(int m, int n, Map<String, Integer> memo) {
 		if (m <1 || n<1)
 			return 0;
 		if (m == 1 || n == 1) {
@@ -25,7 +28,7 @@ public class MemoizedGridTraveller {
 		if (memo.containsKey(m + "," + n)) {
 			return memo.get(m + "," + n);
 		}
-		memo.put(m + "," + n, travel(m-1, n) + travel(m, n-1));
+		memo.put(m + "," + n, memoizedTravel(m-1, n, memo) + memoizedTravel(m, n-1, memo));
 		memo.put(n + "," + m, memo.get(m + "," + n));
 
 		return memo.get(m + "," + n);
