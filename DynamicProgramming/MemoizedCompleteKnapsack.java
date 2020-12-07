@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 
-public class MemoizedKnapsack {
+public class MemoizedCompleteKnapsack {
 	public static void main(String [] args) {
-		MemoizedKnapsack r = new MemoizedKnapsack();
+		MemoizedCompleteKnapsack r = new MemoizedCompleteKnapsack();
 		System.out.println(r.solve(7, Arrays.asList(2, 3)));
 		System.out.println(r.solve(7, Arrays.asList(5, 3, 4, 7)));
 		System.out.println(r.solve(7, Arrays.asList(2, 4)));
@@ -18,12 +18,14 @@ public class MemoizedKnapsack {
 	 * Each numbers in the array can be used as many times as needed
 	 * Returns false otherwise
 	 */
-	private boolean solve(int sum, List<Integer> arrList) {
+	private List<Integer> solve(int sum, List<Integer> arrList) {
 		Map<Integer, Boolean> memo = new HashMap<>();
-		return solveWithMemo(sum, arrList, memo);
+		List<Integer> result = new ArrayList<>();
+		solveWithMemo(sum, arrList, memo, result);
+		return result;
 	}
 
-	private boolean solveWithMemo(int sum, List<Integer> arrList, Map<Integer, Boolean> memo) {
+	private boolean solveWithMemo(int sum, List<Integer> arrList, Map<Integer, Boolean> memo, List<Integer> result) {
 		if (sum == 0) {
 			return true;
 		}
@@ -34,8 +36,9 @@ public class MemoizedKnapsack {
 			return memo.get(sum);
 		}
 		for (int i : arrList) {
-			if (solveWithMemo(sum - i, arrList, memo)) {
+			if (solveWithMemo(sum - i, arrList, memo, result)) {
 				memo.put(sum, true);
+				result.add(i);
 				return true;
 			}
 			// else continue;
